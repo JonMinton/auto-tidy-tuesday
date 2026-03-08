@@ -1,0 +1,12 @@
+project:
+  title: "Agentic AI in Health Research"
+  type: default
+
+format:
+  revealjs:
+    theme: default
+    slide-number: true
+    hash-type: number
+    center: true
+    transition: fade
+    bibliography: refs/references.bib
