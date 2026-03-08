@@ -1,5 +1,5 @@
 ---
-title: "Agentic AI in Health Research"
+title: "Agentic AI for Academics"
 subtitle: "Concepts, Workflows, and a Live Demo"
 author: "Jon Minton"
 date: 2026-03-19
@@ -99,7 +99,7 @@ This is the difference between describing a room to someone over the phone vs ha
 
 ## State / History & SOPs / Architecture
 
-- **State**: the agent remembers what's happened — conversation history, previous decisions
+- **State**: the agent "remembers"^[Not true memory — more like handing over detailed notes to someone with a very similar (even identical) set of expertise. Each session is a new agent reading the previous agent's notes.] what's happened — conversation history, previous decisions
 - **History**: git log, memory files — persistence *across* sessions
 - **SOPs**: your project's conventions (CLAUDE.md, folder structure, coding style)
 - **Architecture**: the overall design the agent works within
@@ -142,6 +142,56 @@ Tools are what let reasoning become **action**.
 . . .
 
 Without version control, agentic AI would be too risky to use on real projects.
+
+## Taste the Cake, Change the Recipe
+
+- The **recipe** = source files (.qmd, .R, .py, config)
+- The **cake** = rendered output (HTML slides, PDF reports, plots)
+- Version control tracks the **recipe**. The cake is regenerated on demand.
+
+. . .
+
+The academic anti-pattern: editing the cake directly — cutting bits of Word doc, pasting into another Word doc, emailing "final_v3_FINAL.docx"
+
+. . .
+
+That's **frankencake**. It's fragile, unreproducible, and untraceable.
+
+::: {.notes}
+This is the key habit shift. Most knowledge workers instinctively work on outputs rather than sources. Everything that follows — Quarto, literate programming, agentic workflows — depends on working at the recipe level.
+:::
+
+## Quarto: An Opinionated Solution
+
+- **Literate programming**: prose, code, and output in one source file (.qmd)
+- One recipe, **many cakes**:
+  - These slides → RevealJS (`format: revealjs`)
+  - A paper → PDF or Word (`format: pdf`, `format: docx`)
+  - A website → HTML pages (`type: website`)
+  - A dashboard → interactive app (`format: dashboard`)
+
+. . .
+
+The source stays the same. The output format is just a setting.
+
+::: {.notes}
+This very presentation is a .qmd file. The sister projects use the same approach for reports and analyses. Quarto is the recipe book; the format is which tin you pour it into.
+:::
+
+## This Repo Right Now
+
+```
+auto-tidy-tuesday/
+├── slides/
+│   └── index.qmd        ← recipe (what we edit)
+├── refs/
+│   └── references.bib   ← bibliography
+├── _quarto.yml           ← project config
+├── CLAUDE.md             ← agent conventions
+└── .gitignore            ← "don't track the cake"
+```
+
+`quarto render` bakes the cake. Git tracks the recipe.
 
 ## Why Should Academics Care?
 
@@ -198,25 +248,51 @@ All three demonstrate agentic AI — audience can steer which we focus on.
 
 # Part 3: Live Demo — Tidy Tuesday {.section}
 
+## What is Tidy Tuesday?
+
+- A **weekly social data project** — running since April 2018
+- Each week: a new dataset, a data dictionary, and an article for context
+- Community shares visualisations and code using **#TidyTuesday**
+- ~350+ datasets published across 8 years
+- Originally R-focused, now welcomes R, Python, and Julia
+
+## Accessing Tidy Tuesday
+
+| | |
+|---|---|
+| **Website** | [tidytues.day](https://tidytues.day) |
+| **GitHub repo** | [github.com/rfordatascience/tidytuesday](https://github.com/rfordatascience/tidytuesday) |
+| **R package** | `install.packages("tidytuesdayR")` |
+| **Load a dataset** | `tidytuesdayR::tt_load("2025-08-19")` |
+| **Community** | Data Science Learning Community (DSLC) |
+
+. . .
+
+Used in 30+ university courses worldwide as a teaching resource.
+
+## Dataset Candidates {.smaller .scrollable}
+
+Curated for this audience — **you choose**:
+
+| Week | Dataset | Why? |
+|---|---|---|
+| 2025-33 | **Scottish Munros** | Scottish, spatial |
+| 2025-42 | **Historic UK Met Data** | UK climate |
+| 2025-28 | **British Library Funding** | UK institutional |
+| 2026-10 | **How likely is 'likely'?** | Probability |
+| 2025-25 | **Measles worldwide** | Health/GIS |
+| 2025-32 | **Extreme Weather** | Climate science |
+| 2026-03 | **Astronomy APOD** | Visual reasoning |
+
 ## How This Works
 
-1. **You choose** a dataset from recent Tidy Tuesday entries
+1. **You choose** a dataset from the list
 2. **We explore** it together with an AI agent
 3. Watch the iterative process of:
    - Understanding the data
    - Asking questions
    - Building visualisations
    - Refining and improving
-
-## Picking a Dataset
-
-::: {.callout-note}
-We'll browse recent Tidy Tuesday datasets and let the audience vote on which to explore.
-:::
-
-- Datasets come from the `tidytuesdayR` package
-- Each has a data dictionary and context
-- Visual reasoning opportunities everywhere
 
 ## What to Watch For
 
@@ -226,26 +302,3 @@ We'll browse recent Tidy Tuesday datasets and let the audience vote on which to 
 - Where the AI's visual reasoning **complements** ours
 - Where it **falls short** and needs guidance
 
-## Let's Begin
-
-```{r}
-#| eval: false
-#| echo: true
-# Load a Tidy Tuesday dataset
-# install.packages("tidytuesdayR")
-library(tidytuesdayR)
-
-# Browse available datasets
-tt_available()
-```
-
-```{python}
-#| eval: false
-#| echo: true
-#| python.reticulate: false
-# Or in Python
-import pandas as pd
-
-# Tidy Tuesday data is also available via CSV URLs
-# from the GitHub repo
-```
