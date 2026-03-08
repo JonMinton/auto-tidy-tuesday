@@ -27,14 +27,18 @@ Both are potential live demo candidates alongside Tidy Tuesday — the audience 
 ```
 auto-tidy-tuesday/
 ├── CLAUDE.md
-├── _quarto.yml          # Quarto project config
+├── _quarto.yml              # Quarto project config
 ├── .gitignore
 ├── refs/
-│   └── references.bib   # Shared bibliography
+│   └── references.bib       # Shared bibliography
 ├── slides/
-│   └── index.qmd        # Main RevealJS slide deck
-└── demos/               # Live demo scripts (R and Python)
+│   └── index.qmd            # Main RevealJS slide deck
+└── explorations/             # Tidy Tuesday explorations
+    └── scottish-munros/      # One subfolder per dataset
+        └── index.qmd         # Self-contained .qmd
 ```
+
+Each exploration is self-contained: its own .qmd with its own `format:` in the YAML header (audience chooses: notebook, slides, PDF, or website). The live demo on the day creates a new subfolder here.
 
 ## Commands
 
