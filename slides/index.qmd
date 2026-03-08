@@ -287,12 +287,17 @@ Curated for this audience — **you choose**:
 ## How This Works
 
 1. **You choose** a dataset from the list
-2. **We explore** it together with an AI agent
-3. Watch the iterative process of:
-   - Understanding the data
-   - Asking questions
-   - Building visualisations
-   - Refining and improving
+2. **You choose** an output format:
+   - Slide deck (RevealJS) — for a presentation
+   - Scientific notebook (HTML) — for exploratory analysis
+   - Academic PDF — with references and structured sections
+   - Interactive website — with live tables and maps
+3. **We explore** it together with an AI agent
+4. Watch the iterative process unfold
+
+. . .
+
+Same .qmd source, different `format:` setting. One recipe, your choice of cake.
 
 ## What to Watch For
 
