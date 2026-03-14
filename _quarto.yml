@@ -1,6 +1,7 @@
 project:
   title: "Agentic AI for Academics"
   type: default
+  output-dir: docs
 
 format:
   revealjs:
