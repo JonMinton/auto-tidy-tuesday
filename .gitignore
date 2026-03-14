@@ -4,6 +4,10 @@ _site/
 *_files/
 *.html
 
+# But include docs/ for GitHub Pages
+!docs/
+!docs/**
+
 # R
 .Rproj.user
 .Rhistory
