@@ -1,0 +1,11 @@
+---
+title: "Reference List"
+format: docx
+bibliography: references.bib
+nocite: '@*'
+---
+
+## References
+
+::: {#refs}
+:::

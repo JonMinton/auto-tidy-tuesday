@@ -1,0 +1,179 @@
+---
+title: "Measles Vaccination Rates in US Schools"
+subtitle: "Tidy Tuesday 2020, Week 9"
+format:
+  html:
+    toc: true
+    code-fold: true
+    theme: cosmo
+bibliography: ../../refs/references.bib
+---
+
+## Background
+
+This exploration uses the Tidy Tuesday measles vaccination dataset [@tidytuesday], originally compiled by The Wall Street Journal [@wsj_measles]. The dataset covers school-level MMR (Measles, Mumps, and Rubella) and overall vaccination rates across 32 US states, along with exemption rates (religious, medical, and personal).
+
+## Load packages and data
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(dplyr)
+library(readr)
+library(ggplot2)
+library(forcats)
+library(ggridges)
+
+measles <- readr::read_csv(
+ 'https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2020/2020-02-25/measles.csv'
+)
+```
+
+## First look
+
+```{r}
+#| label: glimpse
+
+glimpse(measles)
+```
+
+```{r}
+#| label: summary
+
+summary(measles)
+```
+
+## Data cleaning
+
+Many MMR values are coded as `-1`, which represents missing data. Let's recode these and examine what we have.
+
+```{r}
+#| label: clean
+
+measles_clean <- measles |>
+  mutate(
+    mmr = if_else(mmr < 0, NA_real_, mmr),
+    overall = if_else(overall < 0, NA_real_, overall)
+  )
+
+measles_clean |>
+  summarise(
+    n_schools = n(),
+    n_states = n_distinct(state),
+    mmr_available = sum(!is.na(mmr)),
+    overall_available = sum(!is.na(overall)),
+    pct_mmr_available = round(100 * mmr_available / n_schools, 1)
+  )
+```
+
+## MMR vaccination rates by state
+
+```{r}
+#| label: fig-mmr-by-state
+#| fig-cap: "Distribution of school-level MMR vaccination rates by state"
+#| fig-height: 8
+#| fig-width: 10
+
+measles_clean |>
+  filter(!is.na(mmr)) |>
+  mutate(state = fct_reorder(state, mmr, .fun = median, na.rm = TRUE)) |>
+  ggplot(aes(x = mmr, y = state)) +
+  geom_boxplot(outlier.size = 0.5, fill = "steelblue", alpha = 0.5) +
+  geom_vline(xintercept = 95, linetype = "dashed", colour = "red") +
+  annotate("text", x = 94, y = 1, label = "95% herd immunity threshold",
+           hjust = 1, colour = "red", size = 3) +
+  labs(
+    x = "MMR Vaccination Rate (%)",
+    y = NULL,
+    title = "School-level MMR vaccination rates vary widely across states",
+    subtitle = "Red dashed line shows the ~95% threshold for herd immunity"
+  ) +
+  theme_minimal()
+```
+
+### Ridgeplot
+
+The boxplots above highlight many outliers. A ridgeplot shows the full distribution shape for each state, making it easier to see whether low-coverage schools are isolated exceptions or part of a broader pattern.
+
+```{r}
+#| label: fig-mmr-ridgeplot
+#| fig-cap: "Density ridgeplot of school-level MMR vaccination rates by state"
+#| fig-height: 10
+#| fig-width: 10
+
+measles_clean |>
+  filter(!is.na(mmr)) |>
+  mutate(state = fct_reorder(state, mmr, .fun = median, na.rm = TRUE)) |>
+  ggplot(aes(x = mmr, y = state, fill = after_stat(x))) +
+  geom_density_ridges_gradient(scale = 3, rel_min_height = 0.01) +
+  scale_fill_viridis_c(option = "C", name = "MMR %") +
+  geom_vline(xintercept = 95, linetype = "dashed", colour = "red") +
+  labs(
+    x = "MMR Vaccination Rate (%)",
+    y = NULL,
+    title = "Distribution of school-level MMR vaccination rates by state",
+    subtitle = "Red dashed line shows the ~95% herd immunity threshold"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+
+## School type comparison
+
+```{r}
+#| label: fig-school-type
+#| fig-cap: "MMR vaccination rates by school type"
+
+measles_clean |>
+  filter(!is.na(mmr), !is.na(type), type != "") |>
+  ggplot(aes(x = type, y = mmr, fill = type)) +
+  geom_boxplot(alpha = 0.6, show.legend = FALSE) +
+  geom_hline(yintercept = 95, linetype = "dashed", colour = "red") +
+  labs(
+    x = "School Type",
+    y = "MMR Vaccination Rate (%)",
+    title = "How do vaccination rates differ by school type?"
+  ) +
+  theme_minimal()
+```
+
+## Exemption rates
+
+```{r}
+#| label: fig-exemptions
+#| fig-cap: "Relationship between personal exemptions and MMR vaccination rate"
+
+measles_clean |>
+  filter(!is.na(mmr), !is.na(xper), xper >= 0) |>
+  ggplot(aes(x = xper, y = mmr)) +
+  geom_point(alpha = 0.1, size = 0.5) +
+  geom_smooth(method = "loess", colour = "blue", se = TRUE) +
+  geom_smooth(method = "lm", colour = "red", se = TRUE) +
+  labs(
+    x = "Personal Exemption Rate (%)",
+    y = "MMR Vaccination Rate (%)",
+    title = "Higher personal exemption rates are associated with lower MMR coverage"
+  ) +
+  theme_minimal()
+```
+
+## Low-coverage schools
+
+Following tidy data principles [@wickham2014tidy], let's identify schools with notably low coverage.
+
+```{r}
+#| label: low-coverage
+
+measles_clean |>
+  filter(!is.na(mmr), mmr < 80) |>
+  count(state, sort = TRUE) |>
+  head(10) |>
+  knitr::kable(
+    col.names = c("State", "Schools with <80% MMR"),
+    caption = "States with the most schools below 80% MMR vaccination rate"
+  )
+```
+
+## References
