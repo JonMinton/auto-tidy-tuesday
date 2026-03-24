@@ -1,0 +1,136 @@
+---
+title: "Agentic AI for Academics"
+subtitle: "A Shortened Introduction & Live Demo"
+author: "Jon Minton"
+date: 2026-03-19
+format:
+  revealjs:
+    theme: default
+    slide-number: true
+    hash-type: number
+    center: true
+    transition: fade
+bibliography: ../refs/references.bib
+---
+
+## Taste the Cake, Change the Recipe
+
+- The **recipe** = source files (.qmd, .R, .py, config)
+- The **cake** = rendered output (HTML slides, PDF, plots)
+- Version control tracks the **recipe**. The cake is regenerated on demand.
+
+. . .
+
+The academic anti-pattern: editing the cake directly — cutting bits of Word doc, pasting into another Word doc, emailing "final_v3_FINAL.docx"
+
+. . .
+
+That's **frankencake**. Fragile, unreproducible, and untraceable.
+
+::: {.notes}
+The hand-drawn diagrams just covered the conceptual shift from chatbot AI to agentic AI. This slide bridges to the practical: agentic AI works best when you work at the recipe level, not the cake level. Most academics instinctively edit outputs. Everything that follows depends on flipping that habit.
+:::
+
+## This Repo Right Now
+
+```
+auto-tidy-tuesday/
+├── slides-shortened/
+│   └── index.qmd        ← this presentation (recipe)
+├── slides/
+│   └── index.qmd        ← longer version
+├── explorations/         ← Tidy Tuesday analyses go here
+├── refs/
+│   └── references.bib   ← bibliography
+├── _quarto.yml           ← project config
+├── CLAUDE.md             ← agent conventions (the SOP)
+└── .gitignore            ← "don't track the cake"
+```
+
+`quarto render` bakes the cake. Git tracks the recipe.
+
+::: {.notes}
+Orient the audience before the live demo. Point out CLAUDE.md — it's how the agent knows the project's conventions. This is the workspace the agent will operate in.
+:::
+
+## What Shall We Explore?
+
+| Project | Character |
+|---|---|
+| **Tidy Tuesday** | Pick a dataset, explore from scratch |
+| **Ayr Town Centre** | Applied GIS, choropleths, spatial data |
+| **Economic Inactivity** | Statistical modelling, demographic variation |
+
+. . .
+
+**Your choice** — all three demonstrate agentic AI in action.
+
+::: {.notes}
+Default suggestion is Tidy Tuesday — it's native to this repo and shows the full iterative process from nothing. The sister projects are good for showing how an agent navigates an existing, complex codebase.
+:::
+
+## What to Watch For
+
+- How the agent **reads and navigates** the codebase
+- How it **asks clarifying questions** and iterates
+- How **human judgement** steers the analysis
+- Where the AI's reasoning **complements** ours
+- Where it **falls short** and needs guidance
+
+. . .
+
+The agent is a collaborator, not an oracle.
+
+::: {.notes}
+Give the audience a lens so they know what to pay attention to during the demo. The key insight is that it's a dialogue, not a monologue.
+:::
+
+---
+
+## {.center}
+
+::: {style="font-size: 1.5em;"}
+**Let's go.**
+:::
+
+---
+
+# What We Did {.section visibility="hidden"}
+
+::: {.notes}
+Unhide this section at the end if time allows and if using Tidy Tuesday. The following slides can be populated during or after the demo.
+:::
+
+## What We Explored
+
+*[To be filled in after the live demo]*
+
+- **Dataset**:
+- **Output format**:
+- **Key findings**:
+
+## What the Agent Did Well
+
+*[To be filled in after the live demo]*
+
+-
+-
+-
+
+## Where It Needed Us
+
+*[To be filled in after the live demo]*
+
+-
+-
+-
+
+## Links & Resources
+
+| | |
+|---|---|
+| **This repo** | [github.com/JonMinton/auto-tidy-tuesday](https://github.com/JonMinton/auto-tidy-tuesday) |
+| **Hand-drawn diagrams** | [jonminton.github.io/jon-blog/...](https://jonminton.github.io/jon-blog/posts/handdrawn-stats/ai-and-agentic-ai/) |
+| **Tidy Tuesday** | [tidytues.day](https://tidytues.day) |
+| **Claude Code** | [claude.ai/claude-code](https://claude.ai/claude-code) |
+| **Quarto** | [quarto.org](https://quarto.org) |
